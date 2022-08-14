@@ -1,5 +1,6 @@
 import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { createAPIEndpoint } from '../api'
 import useForm from '../hooks/useForm'
 import Center from './Center'
 
@@ -20,7 +21,10 @@ export default function Login() {
     const login = (e) => {
         e.preventDefault()
         if (validate()) {
-            console.log(values);
+            createAPIEndpoint('Participant')
+            .post(values)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
         }
     }
 
