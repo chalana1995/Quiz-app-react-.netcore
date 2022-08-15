@@ -2,6 +2,7 @@ import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/mate
 import React from 'react'
 import { createAPIEndpoint } from '../api'
 import useForm from '../hooks/useForm'
+import useStateContext from '../hooks/useStateContext'
 import Center from './Center'
 
 const getFreshModel = () => ({
@@ -10,6 +11,8 @@ const getFreshModel = () => ({
 })
 
 export default function Login() {
+
+    const { context, setContext } = useStateContext()
 
 
     const { values,
@@ -22,9 +25,12 @@ export default function Login() {
         e.preventDefault()
         if (validate()) {
             createAPIEndpoint('Participant')
-            .post(values)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+                .post(values)
+                .then(res => {
+                    setContext({ participantId: res.data.participantId })
+                    console.log("context", context);
+                })
+                .catch(err => console.log(err))
         }
     }
 
@@ -54,7 +60,7 @@ export default function Login() {
                                 value={values.email}
                                 onChange={handleInputChange}
                                 variant='outlined'
-                                {...(errors.email && {error:true, helperText:errors.email})}
+                                {...(errors.email && { error: true, helperText: errors.email })}
                             />
                             <TextField
                                 label="Name"
@@ -62,7 +68,7 @@ export default function Login() {
                                 value={values.name}
                                 onChange={handleInputChange}
                                 variant='outlined'
-                                {...(errors.name && {error:true, helperText:errors.name})}
+                                {...(errors.name && { error: true, helperText: errors.name })}
                             />
                             <Button type="submit" variant='contained' size='large' sx={{ width: '90%' }}>Start</Button>
                         </form>

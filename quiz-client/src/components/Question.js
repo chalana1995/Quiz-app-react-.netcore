@@ -1,14 +1,11 @@
 import React, { useContext } from 'react'
-import { stateContext } from '../hooks/useStateContext'
+import useStateContext, { stateContext } from '../hooks/useStateContext'
 
 const Question = () => {
 
-    const { context, setContext } = useContext(stateContext)
+    const { context, setContext } = useStateContext()
 
-    setContext({
-        ...context,
-        timeTaken: 1
-    })
+    // setContext({ timeTaken: 1 })
 
     return (
         <div>Question</div>
