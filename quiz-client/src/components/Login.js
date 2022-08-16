@@ -4,7 +4,7 @@ import { createAPIEndpoint } from '../api'
 import useForm from '../hooks/useForm'
 import useStateContext from '../hooks/useStateContext'
 import Center from './Center'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const getFreshModel = () => ({
     name: '',
@@ -28,7 +28,8 @@ export default function Login() {
             createAPIEndpoint('Participant')
                 .post(values)
                 .then(res => {
-                    setContext({ participantId: res.data.participantId })
+                    console.log("===res+++", res);
+                    setContext({ participantId: res.data.partcipantId })
                     console.log("context===", context);
                     navigate("/quiz")
                 })

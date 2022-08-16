@@ -4,30 +4,29 @@ export const stateContext = createContext();
 
 const getFreshContext = () => {
 
-    if (localStorage.getItem('context') === null) {
+    if (localStorage.getItem('context') === null)
         localStorage.setItem('context', JSON.stringify({
             participantId: 0,
             timeTaken: 0,
             selectOptions: []
         }))
-        return JSON.parse(localStorage.getItem('context'))
-    }
+    return JSON.parse(localStorage.getItem('context'))
 
-    
+
+
 }
 
 export default function useStateContext() {
     const { context, setContext } = useContext(stateContext)
     return {
         context,
-        setContext: obj => { setContext({ ...context, ...obj }) }
+        setContext: obj => { setContext({ ...context, ...obj }) },
     }
 }
 
 export function Contextprovider({ children }) {
 
     const [context, setContext] = useState(getFreshContext())
-
 
     useEffect(() => {
         localStorage.setItem('context', JSON.stringify(context))
