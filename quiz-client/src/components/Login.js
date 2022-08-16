@@ -4,6 +4,7 @@ import { createAPIEndpoint } from '../api'
 import useForm from '../hooks/useForm'
 import useStateContext from '../hooks/useStateContext'
 import Center from './Center'
+import {useNavigate} from 'react-router-dom'
 
 const getFreshModel = () => ({
     name: '',
@@ -13,7 +14,7 @@ const getFreshModel = () => ({
 export default function Login() {
 
     const { context, setContext } = useStateContext()
-
+    const navigate = useNavigate()
 
     const { values,
         setValues,
@@ -28,7 +29,8 @@ export default function Login() {
                 .post(values)
                 .then(res => {
                     setContext({ participantId: res.data.participantId })
-                    console.log("context", context);
+                    console.log("context===", context);
+                    navigate("/quiz")
                 })
                 .catch(err => console.log(err))
         }

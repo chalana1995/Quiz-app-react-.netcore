@@ -1,13 +1,19 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 export const stateContext = createContext();
 
 const getFreshContext = () => {
-    return {
-        participantId: 0,
-        timeTaken: 0,
-        selectOptions: []
+
+    if (localStorage.getItem('context') === null) {
+        localStorage.setItem('context', JSON.stringify({
+            participantId: 0,
+            timeTaken: 0,
+            selectOptions: []
+        }))
+        return JSON.parse(localStorage.getItem('context'))
     }
+
+    
 }
 
 export default function useStateContext() {
@@ -22,8 +28,13 @@ export function Contextprovider({ children }) {
 
     const [context, setContext] = useState(getFreshContext())
 
+
+    useEffect(() => {
+        localStorage.setItem('context', JSON.stringify(context))
+    }, [context])
+
     return (
-        <stateContext.Provider value={{context, setContext}}>
+        <stateContext.Provider value={{ context, setContext }}>
             {children}
         </stateContext.Provider>
     )
