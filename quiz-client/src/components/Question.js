@@ -1,6 +1,6 @@
-import { Card, CardContent, Typography, ListItemButton, List, CardHeader, Box, LinearProgress } from '@mui/material'
+import { Card, CardContent, Typography, ListItemButton, List, CardHeader, Box, LinearProgress,CardMedia } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
-import { createAPIEndpoint, ENDPOINTS } from '../api'
+import { BASE_URL, createAPIEndpoint, ENDPOINTS } from '../api'
 import { getFormatedTime } from '../helper'
 import useStateContext, { stateContext } from '../hooks/useStateContext';
 import { useNavigate } from 'react-router'
@@ -22,6 +22,10 @@ const Question = () => {
     }
 
     useEffect(() => {
+        setContext({
+            timeTaken: 0,
+            selectedOptions: []
+        })
         createAPIEndpoint(ENDPOINTS.question)
             .fetch()
             .then(res => {
@@ -59,6 +63,12 @@ const Question = () => {
                 <Box>
                     <LinearProgress variant="determinate" value={(qnIndex + 1) * 100 / 5} />
                 </Box>
+                {qns[qnIndex].imageName != null
+                    ? <CardMedia
+                        component="img"
+                        image={BASE_URL + 'images/' + qns[qnIndex].imageName}
+                        sx={{ width: 'auto', m: '10px auto' }} />
+                    : null}
                 <CardContent>
                     <Typography variant='h6'>{qns[qnIndex].qnInWords}</Typography>
                     <List>
