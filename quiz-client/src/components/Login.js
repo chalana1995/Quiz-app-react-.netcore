@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { createAPIEndpoint } from '../api'
 import useForm from '../hooks/useForm'
 import useStateContext from '../hooks/useStateContext'
@@ -13,7 +13,7 @@ const getFreshModel = () => ({
 
 export default function Login() {
 
-    const { context, setContext } = useStateContext()
+    const { context, setContext, resetContext } = useStateContext()
     const navigate = useNavigate()
 
     const { values,
@@ -21,6 +21,10 @@ export default function Login() {
         errors,
         setErrors,
         handleInputChange } = useForm(getFreshModel)
+
+    useEffect(() => {
+        resetContext()
+    }, [])
 
     const login = (e) => {
         e.preventDefault()
