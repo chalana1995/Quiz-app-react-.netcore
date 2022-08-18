@@ -30,7 +30,7 @@ namespace QuizAPI.Controllers
                 QnId = x.QnId,
                 QnInWords = x.QnInWords,
                 Imagename = x.ImageName,
-                options = new string[] { x.Option1, x.Option2, x.Option3, x.Option4 }
+                Options = new string[] { x.Option1, x.Option2, x.Option3, x.Option4 }
             })
             .OrderBy(y => Guid.NewGuid())
             .Take(5)
@@ -91,16 +91,21 @@ namespace QuizAPI.Controllers
         // POST: api/Question
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Question>> PostQuestion(Question question)
+        [Route("GetAnswers")]
+        public async Task<ActionResult<Question>> RetriveAnswers(int[] qnIds)
         {
-          if (_context.Questions == null)
-          {
-              return Problem("Entity set 'QuizDbContext.Questions'  is null.");
-          }
-            _context.Questions.Add(question);
-            await _context.SaveChangesAsync();
+            var answer = await (_context.Questions
+                  .Where(x => qnIds.Contains(x.QnId))
+                  .Select(y => new
+                  {
+                      QnId = y.QnId,
+                      QnInWords = y.QnInWords,
+                      Imagename = y.ImageName,
+                      Options = new string[] { y.Option1, y.Option2, y.Option3, y.Option4 },
+                      Answer = y.Answer
+                  })).ToListAsync();
 
-            return CreatedAtAction("GetQuestion", new { id = question.QnId }, question);
+            return Ok(answer);
         }
 
         // DELETE: api/Question/5

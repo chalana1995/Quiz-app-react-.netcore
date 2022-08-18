@@ -19,4 +19,14 @@ namespace QuizAPI.Models
 
         public int TimeTaken { get; set; }
     }
+
+
+    public class ParticipantResult
+    {
+        public int PartcipantId { get; set; }
+
+        public int Score { get; set; }
+
+        public int TimeTaken { get; set; }
+    }
 }
